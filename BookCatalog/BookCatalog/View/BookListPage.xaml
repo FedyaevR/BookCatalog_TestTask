@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage Title="Book list" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BookCatalog.View.BookListPage">
+    <ContentPage.Content>
+        
+        <StackLayout Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Entry Grid.Column="0" Grid.Row="0" Placeholder="Search" Text="{Binding SearchQuery}" HorizontalOptions="StartAndExpand" WidthRequest="150"/>
+                <Button  Grid.Column="1" HeightRequest="30" Text="Search" FontSize="Micro" HorizontalOptions="Start" Command="{Binding SearchCommand}"/>
+            </Grid>
+          
+            <ListView x:Name="BooksList" ItemsSource="{Binding BookList}" Header="Books" SelectedItem="{Binding SelectedBook,Mode=TwoWay}" >
+                <ListView.ItemTemplate >
+                    <DataTemplate >
+                        <ViewCell>
+                            <ViewCell.View >
+                                <StackLayout   Orientation="Vertical" VerticalOptions="CenterAndExpand" >
+                                    <Label Text="{Binding BookName}"  FontSize="Medium"/>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView x:Name="Authors" ItemsSource="{Binding AuthorsList}" Header="Author"   >
+                <ListView.ItemTemplate >
+                    <DataTemplate >
+                        <ViewCell>
+                            <ViewCell.View >
+                                <StackLayout   Orientation="Horizontal">
+                                    <Label Text="{Binding AuthorName}"  FontSize="Medium"/>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView x:Name="Genres" ItemsSource="{Binding GenresList}" Header="Genre" >
+                <ListView.ItemTemplate >
+                    <DataTemplate >
+                        <ViewCell>
+                            <ViewCell.View >
+                                <StackLayout   Orientation="Vertical" VerticalOptions="End" >
+                                    <Label Text="{Binding GenreName}"  FontSize="Medium"/>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="Row: "/>
+            <Label Text="{Binding LocationRow}"  FontSize="Medium"/>
+            <Label Text="Rack:" />
+            <Label Text="{Binding LocationRack}"  FontSize="Medium"/>
+            <Label Text="Shelf:" />
+            <Label Text="{Binding LocationShelf}"  FontSize="Medium"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

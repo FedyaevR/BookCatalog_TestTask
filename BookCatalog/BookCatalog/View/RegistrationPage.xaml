@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage Title="Register" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BookCatalog.View.RegistrationPage">
+    <ContentPage.Content>
+        <StackLayout >
+            <Label Text="Login" FontSize="Medium"/>
+            <Entry Text="{Binding Login}" FontSize="Medium"/>
+            <Label Text="Password" FontSize="Medium"/>
+            <Entry Text="{Binding Password}" IsPassword="true" FontSize="Medium"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Button Text="Register" Command="{Binding RegisterCommand}"/>
+                <Button Text="Cancel" Command="{Binding CancelCommand}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

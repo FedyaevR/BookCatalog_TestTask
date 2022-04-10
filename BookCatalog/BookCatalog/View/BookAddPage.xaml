@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage Title="Add book" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BookCatalog.View.BookAddPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry Text="{Binding BookName}" Placeholder="Book name" FontSize="Medium" />
+            <Picker Title="Select a genre" ItemsSource="{Binding GenreList}" SelectedItem="{Binding Genre}" SelectedIndex="{Binding SlecetedGenre, Mode=TwoWay}"/>
+            <Entry Text="{Binding AuthorName}" Placeholder="Author's name" FontSize="Medium"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Picker Title="Select a raw" ItemsSource="{Binding RowList}" SelectedIndex="{Binding SelectedRow, Mode=TwoWay}"/>
+                <Picker Title="Select a rack" ItemsSource="{Binding RackList}" SelectedIndex="{Binding SelectedRack, Mode=TwoWay}"/>
+                <Picker Title="Select a shelf" ItemsSource="{Binding ShelfList}" SelectedIndex="{Binding SelectedShelf, Mode=TwoWay}"/>
+            </StackLayout>
+            <Button Text="Add Author" Command="{Binding AddAuthorCommand}" HorizontalOptions="Center" />
+            <Button Text="Add Genre" Command="{Binding AddGenreCommand}" HorizontalOptions="Center" />
+            <Button Text="Add" Command="{Binding AddBookCommand}" IsEnabled="{Binding AddButtonEnabled}"   HorizontalOptions="Center"/>
+            <Label Text="{Binding Author}" FontSize="Medium" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
