@@ -132,7 +132,7 @@ namespace BookCatalog.ViewModels
             var list =  App.BookRepository.ShowAllBook();
             for (int i = 0; i < list.Count; i++)
             {
-                _books.Add(new Book() { BookName = list[i].BookName, Authors = list[i].Authors, Genres = list[i].Genres, Location = list[i].Location}) ;
+                _books.Add(new Book() { BookName = list[i].BookName, Authors = list[i].Authors, Genres = list[i].Genres, Location = list[i].Location});
             }
             SearchCommand = new Command(Search);
         }
@@ -145,6 +145,7 @@ namespace BookCatalog.ViewModels
             for (int i = 0; i < list.Count; i++)
             {
                 _books.Add(new Book() { BookName = list[i].BookName, Authors = list[i].Authors, Genres = list[i].Genres, Location = list[i].Location });
+               // _books.Add(list[i]);
             }
             OnPropertyChanged("BookList");
         }

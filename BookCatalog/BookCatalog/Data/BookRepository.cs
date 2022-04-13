@@ -71,6 +71,7 @@ namespace BookCatalog.Data
             }
             return false;
         }
+
         public  List<Book> ShowAllBook()
         {
             if (db.Table<Book>().ToList().Count > 0)
@@ -79,39 +80,69 @@ namespace BookCatalog.Data
             }
             return new List<Book>();
         }
+        #region Old method for search book
         /// <summary>
         /// Primitive search
         /// </summary>
         /// <param name="searchQuery"></param>
         /// <returns>List of books that matched in value</returns>
+        //public async Task<List<Book>> SearchBookAsync(string searchQuery)
+        //{
+        //    if (db.Table<Book>().ToList().Count > 0)
+        //    {
+        //        var list = await Task.Run(() => db.GetAllWithChildren<Book>());
+        //        var listBookName = await Task.Run(()=> list.FindAll(i => i.BookName == searchQuery));
+        //        var listGenre = await Task.Run(() => list.FindAll(i =>i.Genres.Contains(i.Genres.Find(j => j.GenreName == searchQuery))));
+        //        var listAuthor = await Task.Run(() => list.FindAll(i => i.Authors.Contains(i.Authors.Find(j => j.AuthorName == searchQuery))));
+        //        if (listBookName.Count > 0)
+        //        {
+        //            return listBookName;
+        //        }
+        //        else if(listGenre.Count > 0)
+        //        {
+        //            return listGenre;
+        //        }
+        //        else if(listAuthor.Count > 0)
+        //        {
+        //            return listAuthor;
+        //        }
+        //        else
+        //        {
+        //            return db.GetAllWithChildren<Book>();
+        //        }
+
+        //    }
+        //    return new List<Book>();
+        //}
+        #endregion
+
         public async Task<List<Book>> SearchBookAsync(string searchQuery)
         {
-            if (db.Table<Book>().ToList().Count > 0)
+            List<Book> finalResult = new List<Book>();
+            List<Book> interimResult = new List<Book>();
+            if (string.IsNullOrWhiteSpace(searchQuery) == false)
             {
-                var list = await Task.Run(() => db.GetAllWithChildren<Book>());
-                var listBookName = await Task.Run(()=> list.FindAll(i => i.BookName == searchQuery));
-                var listGenre = await Task.Run(() => list.FindAll(i =>i.Genres.Contains(i.Genres.Find(j => j.GenreName == searchQuery))));
-                var listAuthor = await Task.Run(() => list.FindAll(i => i.Authors.Contains(i.Authors.Find(j => j.AuthorName == searchQuery))));
-                if (listBookName.Count > 0)
+                interimResult = await Task.Run(() => db.Query<Book>("select* from [Book] inner join [Author] on Book.Id = Author.BookId where [AuthorName] = ? union select* from [Book] inner join [Genre] on Book.Id = Genre.BookId where [GenreName] = ?", searchQuery));
+                if (interimResult.Count > 0)
                 {
-                    return listBookName;
-                }
-                else if(listGenre.Count > 0)
-                {
-                    return listGenre;
-                }
-                else if(listAuthor.Count > 0)
-                {
-                    return listAuthor;
+                    finalResult = await Task.Run(() => db.GetAllWithChildren<Book>().FindAll(i => interimResult.FindAll(j => j.BookName == i.BookName).Count > 0));
                 }
                 else
                 {
-                    return db.GetAllWithChildren<Book>();
+                    finalResult = await Task.Run(() => db.GetAllWithChildren<Book>().FindAll(i => i.BookName == searchQuery));
                 }
-                
+
+            }
+            if(finalResult.Count <= 0)
+            {
+                finalResult = await Task.Run(() => db.GetAllWithChildren<Book>());
+            }
+            if(finalResult.Count > 0)
+            {
+                return finalResult;
             }
             return new List<Book>();
         }
-      
+
     }
 }
